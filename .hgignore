@@ -1,0 +1,12 @@
+syntax: glob
+
+Binaries/*
+
+Research/*
+
+Releases/*
+
+Source/*.suo
+Source/*/*.csproj.user
+Source/*/bin/*
+Source/*/obj/*

@@ -1,0 +1,47 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DmmLog", "DmmLog\DmmLog.csproj", "{092BACC1-7707-426D-BF22-6FC6ED576CB4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BC662B54-718C-42DF-8F09-F124D057317A} = {BC662B54-718C-42DF-8F09-F124D057317A}
+		{1E73CBDB-BA37-4C3E-94AF-F408BC266115} = {1E73CBDB-BA37-4C3E-94AF-F408BC266115}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DmmLog-Driver", "DmmLog-Driver\DmmLog-Driver.csproj", "{B83BA058-B929-4316-9DF8-07FCB852006D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DmmLog-Driver-Agilent", "DmmLog-Driver-Agilent\DmmLog-Driver-Agilent.csproj", "{BC662B54-718C-42DF-8F09-F124D057317A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DmmLog-Test", "DmmLog-Test\DmmLog-Test.csproj", "{DF0C6B70-6CAA-45DF-AF76-BD22FDA28B1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DmmLog-Driver-Random", "DmmLog-Driver-Random\DmmLog-Driver-Random.csproj", "{1E73CBDB-BA37-4C3E-94AF-F408BC266115}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{092BACC1-7707-426D-BF22-6FC6ED576CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{092BACC1-7707-426D-BF22-6FC6ED576CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{092BACC1-7707-426D-BF22-6FC6ED576CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{092BACC1-7707-426D-BF22-6FC6ED576CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B83BA058-B929-4316-9DF8-07FCB852006D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B83BA058-B929-4316-9DF8-07FCB852006D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B83BA058-B929-4316-9DF8-07FCB852006D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B83BA058-B929-4316-9DF8-07FCB852006D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC662B54-718C-42DF-8F09-F124D057317A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC662B54-718C-42DF-8F09-F124D057317A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC662B54-718C-42DF-8F09-F124D057317A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC662B54-718C-42DF-8F09-F124D057317A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF0C6B70-6CAA-45DF-AF76-BD22FDA28B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF0C6B70-6CAA-45DF-AF76-BD22FDA28B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF0C6B70-6CAA-45DF-AF76-BD22FDA28B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF0C6B70-6CAA-45DF-AF76-BD22FDA28B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E73CBDB-BA37-4C3E-94AF-F408BC266115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E73CBDB-BA37-4C3E-94AF-F408BC266115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E73CBDB-BA37-4C3E-94AF-F408BC266115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E73CBDB-BA37-4C3E-94AF-F408BC266115}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
