@@ -124,10 +124,17 @@ namespace DmmLogDriver {
         }
 
         /// <summary>
+        /// Gets SI unit for value.
+        /// </summary>
+        public String SIUnit {
+            get { return string.Format(CultureInfo.CurrentCulture, "{0}{1}", this.SIPrefix, this.MeasurementType.Unit); }
+        }
+
+        /// <summary>
         /// Returns a string that represents the current object.
         /// </summary>
         public override string ToString() {
-            return string.Format(CultureInfo.CurrentCulture, "{0:0.######} {1}{2}", this.EngineeringCoefficient, this.SIPrefix, this.MeasurementType.Unit);
+            return string.Format(CultureInfo.CurrentCulture, "{0:0.######} {1}", this.EngineeringCoefficient, this.SIUnit);
         }
 
 
@@ -135,7 +142,9 @@ namespace DmmLogDriver {
 
         private static int GetEngineeringExponent(decimal value) {
             value = Math.Abs(value);
-            if (value >= 1) {
+            if (value == 0) {
+                return 0;
+            } else if (value >= 1) {
                 var exp = 0;
                 while (value > 1) {
                     value /= 10;

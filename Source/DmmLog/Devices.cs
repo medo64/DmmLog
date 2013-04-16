@@ -71,5 +71,13 @@ namespace DmmLog {
             get { return Devices.Items.AsReadOnly(); }
         }
 
+
+        public static event EventHandler<EventArgs> MeasurementUpdate;
+
+        internal static void RaiseMeasurementUpdate(Device device) {
+            var handler = Devices.MeasurementUpdate;
+            if (handler != null) { handler(device, new EventArgs()); }
+        }
+
     }
 }

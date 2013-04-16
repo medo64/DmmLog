@@ -94,6 +94,10 @@
     </Compile>
     <Compile Include="App.cs" />
     <Compile Include="Properties\SolutionInfo.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SidebarControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="NewDeviceNoInterfaceForm.resx">
       <DependentUpon>NewDeviceNoInterfaceForm.cs</DependentUpon>
     </EmbeddedResource>

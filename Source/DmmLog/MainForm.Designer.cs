@@ -37,6 +37,7 @@
             this.mnuDeviceAdd = new System.Windows.Forms.ToolStripDropDownButton();
             this.mnuDeviceSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.sta = new System.Windows.Forms.StatusStrip();
+            this.sidebar = new DmmLog.SidebarControl();
             this.mnu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -152,15 +153,29 @@
             this.sta.Size = new System.Drawing.Size(582, 22);
             this.sta.TabIndex = 1;
             // 
+            // sidebar
+            // 
+            this.sidebar.AutoScroll = true;
+            this.sidebar.AutoScrollMinSize = new System.Drawing.Size(0, 21);
+            this.sidebar.Dock = System.Windows.Forms.DockStyle.Right;
+            this.sidebar.Location = new System.Drawing.Point(180, 27);
+            this.sidebar.MaximumSize = new System.Drawing.Size(402, 0);
+            this.sidebar.MinimumSize = new System.Drawing.Size(402, 0);
+            this.sidebar.Name = "sidebar";
+            this.sidebar.Size = new System.Drawing.Size(402, 306);
+            this.sidebar.TabIndex = 2;
+            this.sidebar.Text = "sidebarControl1";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(582, 355);
+            this.Controls.Add(this.sidebar);
             this.Controls.Add(this.sta);
             this.Controls.Add(this.mnu);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(400, 300);
+            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "MainForm";
             this.Text = "DMM Log";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form_FormClosing);
@@ -188,6 +203,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripSeparator mnuDeviceSeparator;
         private System.Windows.Forms.ToolStripDropDownButton mnuDeviceAdd;
+        private SidebarControl sidebar;
     }
 }
 

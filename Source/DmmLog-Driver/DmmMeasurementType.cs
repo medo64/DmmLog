@@ -82,6 +82,12 @@ namespace DmmLogDriver {
         /// </summary>
         public static DmmMeasurementType Resistance { get { return _resistance; } }
 
+        private static DmmMeasurementType _diode = new DmmMeasurementType("Diode", "Diode", "V");
+        /// <summary>
+        /// Gets diode forward voltage measurement type.
+        /// </summary>
+        public static DmmMeasurementType Diode { get { return _diode; } }
+
         private static DmmMeasurementType _capacitance = new DmmMeasurementType("Capacitance", "Capacitance", "F");
         /// <summary>
         /// Gets capacitance measurement type.

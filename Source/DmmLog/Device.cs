@@ -199,7 +199,11 @@ namespace DmmLog {
                     var current = dmm.GetCurrentMeasurement();
                     if (current != null) {
                         Debug.WriteLine("I: Current measurement '" + current.ToString() + "'.");
+                        this.CurrentMeasurement = current;
+                    } else {
+                        Debug.WriteLine("I: Current measurement '-'.");
                     }
+                    Devices.RaiseMeasurementUpdate(this);
                     Thread.Sleep(200);
 
                     Worker.ReportProgress(-1); //new measurement
@@ -215,6 +219,20 @@ namespace DmmLog {
 
         void Worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             this.MenuItem.ForeColor = SystemColors.GrayText;
+        }
+
+        #endregion
+
+
+        #region Properties
+
+        private DmmMeasurement _currentMeasurement;
+        public DmmMeasurement CurrentMeasurement {
+            get {
+                var value = this._currentMeasurement;
+                return (value != null) && ((DateTime.UtcNow - value.Time).TotalMilliseconds <= 500) ? value : null;
+            }
+            private set { this._currentMeasurement = value; }
         }
 
         #endregion
