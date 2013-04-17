@@ -3,7 +3,6 @@ using Medo.Math;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Security.Cryptography;
 
 namespace DmmLogDriverAgilent {
     [DisplayName("Random")]
@@ -58,21 +57,23 @@ namespace DmmLogDriverAgilent {
 
 
         private MovingAverage Readings = new MovingAverage(1000);
-        private static RandomNumberGenerator Rnd = RandomNumberGenerator.Create();
+        private static System.Random Rnd = new System.Random();
 
         private decimal GetNextValue() {
             var bytes = new byte[5];
-            Random.Rnd.GetBytes(bytes);
 
-            var value = BitConverter.ToInt32(bytes, 0) % 26 + 5; //-20 to +30
-
-            if ((this.Readings.IsEmpty) || (bytes[4] == 0)) {
+            if (this.Readings.IsEmpty || (Rnd.Next(100) == 0)) {
                 this.Readings.Clear();
-                for (int i = 0; i < 16; i++) {//to avoid huge changes after next number is added in
-                    this.Readings.Add(value);
-                }
+                var newValue = Rnd.Next(-9, 10) * Math.Pow(10, Rnd.Next(-8, 9));
+                this.Readings.Add(newValue);
+            } else {
+                var currValue = this.Readings.Average;
+                var newDelta = Rnd.Next(-200, 201) / 100.0;
+                var newRange = (currValue != 0) ? Math.Pow(10, Math.Truncate((Math.Log10(Math.Abs(currValue))))) : 1;
+                if (newRange < 1) { newRange /= 10; }
+                var newValue = currValue + newDelta * newRange;
+                this.Readings.Add(newValue);
             }
-            this.Readings.Add(value);
 
             return Convert.ToDecimal(this.Readings.Average);
         }
