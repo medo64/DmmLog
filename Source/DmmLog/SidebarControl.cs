@@ -110,26 +110,27 @@ namespace DmmLog {
                 var y = top + this.DigitNumberSize.Height / 2;
                 var x = left;
 
-                if (integralDigitCount < Settings.SidebarDigitCount) { //has dot
+                if ((integralDigitCount > 0) && (integralDigitCount < Settings.SidebarDigitCount)) { //has dot
                     graphics.DrawString(".", this.DigitDotFont, SystemBrushes.GrayText, left + this.DigitMinusSize.Width + integralDigitCount * this.DigitNumberSize.Width + this.DigitDotSize.Width / 2, y, SFCenterMiddle);
                 }
 
                 for (int i = 0; i < (1 + Settings.SidebarDigitCount); i++) {
                     var ch = chars[i];
                     switch (ch) {
-                        case '+':
-                            x += this.DigitMinusSize.Width;
-                            break;
-                        case '-':
-                            graphics.DrawString("-", this.DigitMinusFont, SystemBrushes.InfoText, x + this.DigitMinusSize.Width / 2, y, SFCenterMiddle);
-                            x += this.DigitMinusSize.Width;
-                            break;
-                        default:
-                            var font = (i <= integralDigitCount) ? this.DigitIntegralFont : this.DigitFractionalFont;
-                            var brush = (i <= integralDigitCount) ? SystemBrushes.InfoText : SystemBrushes.GrayText;
-                            graphics.DrawString(chars[i].ToString(), font, brush, x + this.DigitNumberSize.Width / 2, y, SFCenterMiddle);
-                            x += this.DigitNumberSize.Width + ((i == integralDigitCount) ? this.DigitDotSize.Width : 0);
-                            break;
+                        case '+': {
+                                x += this.DigitMinusSize.Width;
+                            } break;
+                        case '-': {
+                                var brush = (integralDigitCount > 0) ? SystemBrushes.InfoText : SystemBrushes.GrayText; //gray for OL
+                                graphics.DrawString("-", this.DigitMinusFont, brush, x + this.DigitMinusSize.Width / 2, y, SFCenterMiddle);
+                                x += this.DigitMinusSize.Width;
+                            } break;
+                        default: {
+                                var font = (i <= integralDigitCount) ? this.DigitIntegralFont : this.DigitFractionalFont;
+                                var brush = (i <= integralDigitCount) ? SystemBrushes.InfoText : SystemBrushes.GrayText;
+                                graphics.DrawString(chars[i].ToString(), font, brush, x + this.DigitNumberSize.Width / 2, y, SFCenterMiddle);
+                                x += this.DigitNumberSize.Width + ((i == integralDigitCount) ? this.DigitDotSize.Width : 0);
+                            } break;
                     }
                 }
 
@@ -155,8 +156,10 @@ namespace DmmLog {
             }
 
             if (value >= 10) { //cannot display
-                chars[1] = 'O';
-                chars[2] = 'L';
+                chars[1] = ' ';
+                chars[2] = 'O';
+                chars[3] = 'L';
+                integeralDigitsCount = 0;
             } else {
                 for (int i = 0; i < Settings.SidebarDigitCount; i++) {
                     var d = (int)value % 10;

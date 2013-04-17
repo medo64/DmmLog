@@ -122,53 +122,62 @@ namespace DmmLogDriverAgilent {
         public override DmmMeasurement GetCurrentMeasurement() {
             var resultRead = this.SendScpi("READ?");
 
-            decimal value;
-            if (decimal.TryParse(resultRead, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) {
-                DmmMeasurementType type = DmmMeasurementType.Unknown;
-                var resultConf = this.SendScpi("CONF?");
-                if ((resultConf != null) && resultConf.StartsWith("\"", StringComparison.Ordinal) && resultConf.EndsWith("\"", StringComparison.Ordinal)) {
-                    var resultConfParts = resultConf.Substring(1, resultConf.Length - 2).ToUpperInvariant().Split(',');
-                    switch (resultConfParts[0]) {
-                        case "V": {
-                                if (resultConfParts.Length == 3) {
-                                    switch (resultConfParts[2]) {
-                                        case "AC": {
-                                                type = DmmMeasurementType.VoltageAC;
-                                            } break;
-                                        case "DC": {
-                                                type = DmmMeasurementType.VoltageDC;
-                                            } break;
-                                    }
+            DmmMeasurementType type = DmmMeasurementType.Unknown;
+            var resultConf = this.SendScpi("CONF?");
+            if ((resultConf != null) && resultConf.StartsWith("\"", StringComparison.Ordinal) && resultConf.EndsWith("\"", StringComparison.Ordinal)) {
+                var resultConfParts = resultConf.Substring(1, resultConf.Length - 2).ToUpperInvariant().Split(',');
+                switch (resultConfParts[0]) {
+                    case "V": {
+                            if (resultConfParts.Length == 3) {
+                                switch (resultConfParts[2]) {
+                                    case "AC": {
+                                            type = DmmMeasurementType.VoltageAC;
+                                        } break;
+                                    case "DC": {
+                                            type = DmmMeasurementType.VoltageDC;
+                                        } break;
                                 }
-                            } break;
-                        case "RES": {
-                                type = DmmMeasurementType.Resistance;
-                            } break;
-                        case "DIOD": {
-                                type = DmmMeasurementType.Diode;
-                            } break;
-                        case "CAP": {
-                                type = DmmMeasurementType.Capacitance;
-                            } break;
-                        case "A":
-                        case "UA": {
-                                if (resultConfParts.Length == 3) {
-                                    switch (resultConfParts[2]) {
-                                        case "AC": {
-                                                type = DmmMeasurementType.CurrentAC;
-                                            } break;
-                                        case "DC": {
-                                                type = DmmMeasurementType.CurrentDC;
-                                            } break;
-                                    }
+                            }
+                        } break;
+                    case "RES": {
+                            type = DmmMeasurementType.Resistance;
+                        } break;
+                    case "DIOD": {
+                            type = DmmMeasurementType.Diode;
+                        } break;
+                    case "CAP": {
+                            type = DmmMeasurementType.Capacitance;
+                        } break;
+                    case "A":
+                    case "UA": {
+                            if (resultConfParts.Length == 3) {
+                                switch (resultConfParts[2]) {
+                                    case "AC": {
+                                            type = DmmMeasurementType.CurrentAC;
+                                        } break;
+                                    case "DC": {
+                                            type = DmmMeasurementType.CurrentDC;
+                                        } break;
                                 }
-                            } break;
-                        case "FREQ": {
-                                type = DmmMeasurementType.Frequency;
-                            } break;
+                            }
+                        } break;
+                    case "FREQ": {
+                            type = DmmMeasurementType.Frequency;
+                        } break;
+                }
+            }
+
+            if (resultRead != null) {
+                if (resultRead.Equals("+9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
+                    return new DmmMeasurement(decimal.MaxValue, type);
+                } else if (resultRead.Equals("-9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
+                    return new DmmMeasurement(decimal.MinValue, type);
+                } else {
+                    decimal value;
+                    if (decimal.TryParse(resultRead, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) {
+                        return new DmmMeasurement(value, type);
                     }
                 }
-                return new DmmMeasurement(value, type);
             }
 
             return null;

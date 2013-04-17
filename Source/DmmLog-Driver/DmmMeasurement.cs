@@ -78,6 +78,7 @@ namespace DmmLogDriver {
         public Decimal EngineeringCoefficient {
             get {
                 var value = this.Value;
+                if ((value == decimal.MaxValue) || (value == decimal.MinValue)) { return value; }
                 var exponent = this.EngineeringExponent;
                 if (exponent >= 0) {
                     for (int i = 0; i < exponent; i++) {
@@ -141,6 +142,7 @@ namespace DmmLogDriver {
         #region Helpers
 
         private static int GetEngineeringExponent(decimal value) {
+            if ((value == decimal.MaxValue) || (value == decimal.MinValue)) { return 0; }
             value = Math.Abs(value);
             if (value == 0) {
                 return 0;
