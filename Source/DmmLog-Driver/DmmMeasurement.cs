@@ -146,7 +146,7 @@ namespace DmmLogDriver {
                 return 0;
             } else if (value >= 1) {
                 var exp = 0;
-                while (value > 1) {
+                while (value > 10) {
                     value /= 10;
                     exp += 1;
                 }
