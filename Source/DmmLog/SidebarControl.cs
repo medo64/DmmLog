@@ -1,4 +1,4 @@
-﻿using DmmLogDriver;
+using DmmLogDriver;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -32,7 +32,7 @@ namespace DmmLog {
             this.DisplayMargin = new Padding(SystemInformation.VerticalScrollBarWidth, SystemInformation.HorizontalScrollBarHeight, (int)(SystemInformation.VerticalScrollBarWidth * 1.5), SystemInformation.HorizontalScrollBarHeight);
 
             using (var g = this.CreateGraphics()) {
-                g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
                 var multiplierX = (g.DpiX / 96.0F);
                 var multiplierY = (g.DpiY / 96.0F);
@@ -43,15 +43,13 @@ namespace DmmLog {
 
                 this.DisplayPadding = new Padding((int)(this.BaseDisplayPadding.Left * multiplierX), (int)(this.BaseDisplayPadding.Top * multiplierY), (int)(this.BaseDisplayPadding.Right * multiplierX), (int)(this.BaseDisplayPadding.Bottom * multiplierY));
 
-                this.DigitIntegralFont = new Font(Settings.DisplayDigitsFontName, digitHeight, FontStyle.Bold, GraphicsUnit.Pixel);
-                this.DigitFractionalFont = new Font(Settings.DisplayDigitsFontName, digitHeight, FontStyle.Regular, GraphicsUnit.Pixel);
-                this.DigitUnitFont = new Font(Settings.DisplayTitleFontName, digitHeight / 3, FontStyle.Regular, GraphicsUnit.Pixel);
+                this.DigitIntegralFont = new Font(Settings.SidebarFontName, digitHeight, FontStyle.Bold, GraphicsUnit.Pixel);
+                this.DigitFractionalFont = new Font(Settings.SidebarFontName, digitHeight, FontStyle.Regular, GraphicsUnit.Pixel);
+                this.DigitUnitFont = new Font(Settings.SidebarFontName, digitHeight / 3, FontStyle.Regular, GraphicsUnit.Pixel);
                 this.DigitSize = new Size((int)Math.Ceiling(g.MeasureString("X", this.DigitIntegralFont, 0, StringFormat.GenericTypographic).Width) + SystemInformation.BorderSize.Width * 2, digitHeight);
-                this.DigitIntegralCount = 3;
-                this.DigitFractionalCount = Settings.FractionalDigitCount;
-                var digitsWidth = (1 + this.DigitIntegralCount + this.DigitFractionalCount + 1) * this.DigitSize.Width;
+                var digitsWidth = (1 + Settings.SidebarDigitCount + 1) * this.DigitSize.Width;
 
-                this.TitleFont = new Font(Settings.DisplayTitleFontName, titleHeight, GraphicsUnit.Pixel);
+                this.TitleFont = new Font(Settings.SidebarFontName, titleHeight, GraphicsUnit.Pixel);
                 this.TitleSize = new Size(digitsWidth, titleHeight);
 
                 this.InfoSize = new Size(digitsWidth, infoHeight);
@@ -73,8 +71,6 @@ namespace DmmLog {
         private Font DigitIntegralFont;
         private Font DigitFractionalFont;
         private Size DigitSize;
-        private Int32 DigitIntegralCount;
-        private Int32 DigitFractionalCount;
         private Font DigitUnitFont;
         private Size InfoSize;
 
@@ -90,7 +86,7 @@ namespace DmmLog {
             e.Graphics.CompositingQuality = CompositingQuality.Default;
             e.Graphics.InterpolationMode = InterpolationMode.Default;
             e.Graphics.SmoothingMode = SmoothingMode.Default;
-            e.Graphics.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
+            e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
             var y = 0;
             var x = this.DisplayMargin.Left;
@@ -112,45 +108,60 @@ namespace DmmLog {
         private void PaintDigits(Graphics graphics, int x, int y, DmmMeasurement measurement) {
             if (measurement != null) {
                 var value = measurement.EngineeringCoefficient;
+                int integralDigitCount;
+                var chars = GetChars(value, out integralDigitCount);
 
-                if (Math.Abs(value) >= 1000) {
-                    var digitsWidth = (1 + this.DigitIntegralCount + this.DigitFractionalCount) * this.DigitSize.Width;
-                    graphics.DrawString("OL", this.DigitIntegralFont, SystemBrushes.InfoText, x + digitsWidth / 2, y + this.DigitSize.Height / 2, SFCenterMiddle);
-                } else {
-                    var chars = GetChars(value);
-
-                    if (this.DigitFractionalCount > 0) { //has dot
-                        var dotSize = this.DigitSize.Width / 6;
-                        graphics.FillEllipse(SystemBrushes.GrayText, x + this.DigitSize.Width * 4 - dotSize / 2, y + this.DigitSize.Height - dotSize * 2.75F, dotSize, dotSize);
-                    }
-                    for (int i = 0; i < (1 + this.DigitIntegralCount + this.DigitFractionalCount); i++) {
-                        var font = (char.IsDigit(chars[i]) && (i < 4)) ? this.DigitIntegralFont : this.DigitFractionalFont;
-                        var brush = (i < 4) ? SystemBrushes.InfoText : SystemBrushes.GrayText;
-                        graphics.DrawString(chars[i].ToString(), font, brush, x + this.DigitSize.Width * i + this.DigitSize.Width / 2, y + this.DigitSize.Height / 2, SFCenterMiddle);
-                    }
-
-                    graphics.DrawString(measurement.SIUnit, this.DigitUnitFont, SystemBrushes.InfoText, x + this.DisplaySize.Width, y + this.DigitSize.Height / 2, SFRightMiddle);
+                if (integralDigitCount < Settings.SidebarDigitCount) { //has dot
+                    var dotSize = this.DigitSize.Width / 6;
+                    graphics.FillEllipse(SystemBrushes.GrayText, x + (integralDigitCount + 1) * this.DigitSize.Width - dotSize / 2, y + this.DigitSize.Height - dotSize * 2.75F, dotSize, dotSize);
                 }
+                for (int i = 0; i < (1 + Settings.SidebarDigitCount); i++) {
+                    var font = (char.IsDigit(chars[i]) && (i <= integralDigitCount)) ? this.DigitIntegralFont : this.DigitFractionalFont;
+                    var brush = (i <= integralDigitCount) ? SystemBrushes.InfoText : SystemBrushes.GrayText;
+                    graphics.DrawString(chars[i].ToString(), font, brush, x + this.DigitSize.Width * i + this.DigitSize.Width / 2, y + this.DigitSize.Height / 2, SFCenterMiddle);
+                }
+
+                graphics.DrawString(measurement.SIUnit, this.DigitUnitFont, SystemBrushes.InfoText, x + this.DisplaySize.Width, y + this.DigitSize.Height / 2, SFRightMiddle);
             }
         }
 
-        private char[] GetChars(decimal value) {
-            var chars = new char[1 + this.DigitIntegralCount + this.DigitFractionalCount];
+        private char[] GetChars(decimal value, out int integeralDigitsCount) {
+            var chars = new char[1 + Settings.SidebarDigitCount];
 
             chars[0] = (value >= 0) ? ' ' : '-';
+            value = Math.Abs(value);
 
-            value = Math.Abs(value) / 100;
-            for (int i = 0; i < this.DigitIntegralCount + this.DigitFractionalCount; i++) {
-                var d = (int)value % 10;
-                chars[1 + i] = (char)(0x30 + d);
-                value *= 10;
+            if (Settings.SidebarSlidingDecimalPoint) {
+                integeralDigitsCount = 1;
+                while ((value > 10) && (integeralDigitsCount < Settings.SidebarDigitCount)) {
+                    integeralDigitsCount += 1;
+                    value /= 10;
+                }
+            } else {
+                integeralDigitsCount = 3;
+                value /= 100;
             }
 
-            for (int i = 1; i < this.DigitIntegralCount; i++) { //remove leading zeros
-                if (chars[i] == '0') {
-                    chars[i] = ' ';
-                } else {
-                    break;
+            if (value >= 10) { //cannot display
+                chars[1] = 'O';
+                chars[2] = 'L';
+            } else {
+                for (int i = 0; i < Settings.SidebarDigitCount; i++) {
+                    var d = (int)value % 10;
+                    chars[1 + i] = (char)(0x30 + d);
+                    value *= 10;
+                }
+
+                for (int i = 1; i < integeralDigitsCount; i++) { //remove leading zeros
+                    if (chars[i] == '0') {
+                        chars[i] = ' ';
+                        if (Settings.SidebarSlidingMinusSign) {
+                            chars[i] = chars[i - 1];
+                            chars[i - 1] = ' ';
+                        }
+                    } else {
+                        break;
+                    }
                 }
             }
 

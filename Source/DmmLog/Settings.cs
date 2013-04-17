@@ -5,16 +5,20 @@ using System.Text;
 namespace DmmLog {
     internal static class Settings {
 
-        public static String DisplayTitleFontName {
+        public static String SidebarFontName {
             get { return "Arial"; }
         }
 
-        public static String DisplayDigitsFontName {
-            get { return "Courier New"; }
+        public static Int32 SidebarDigitCount {
+            get { return 4; }
         }
 
-        public static Int32 FractionalDigitCount {
-            get { return 1; }
+        public static Boolean SidebarSlidingDecimalPoint {
+            get { return true; }
+        }
+
+        public static Boolean SidebarSlidingMinusSign {
+            get { return true; }
         }
 
     }
