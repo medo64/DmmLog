@@ -119,6 +119,8 @@ namespace DmmLogDriverAgilent {
             }
         }
 
+        private DmmMeasurementType LastMeasurementType = null;
+
         public override DmmMeasurement GetCurrentMeasurement() {
             var resultRead = this.SendScpi("READ?");
 
@@ -165,6 +167,13 @@ namespace DmmLogDriverAgilent {
                             type = DmmMeasurementType.Frequency;
                         } break;
                 }
+            }
+
+            if (!type.Equals(this.LastMeasurementType)) {
+                this.LastMeasurementType = type;
+                return GetCurrentMeasurement(); //repeat measurement
+            } else {
+                this.LastMeasurementType = type;
             }
 
             if (resultRead != null) {
