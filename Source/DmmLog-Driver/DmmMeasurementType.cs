@@ -70,7 +70,7 @@ namespace DmmLogDriver {
         /// </summary>
         public static DmmMeasurementType VoltageDC { get { return _voltageDC; } }
 
-        private static DmmMeasurementType _voltageAC = new DmmMeasurementType("VoltageAC", "Voltage (AC)", "V");
+        private static DmmMeasurementType _voltageAC = new DmmMeasurementType("VoltageAC", "Voltage (AC)", "V~");
         /// <summary>
         /// Gets voltage (AC) measurement type.
         /// </summary>
@@ -100,7 +100,7 @@ namespace DmmLogDriver {
         /// </summary>
         public static DmmMeasurementType CurrentDC { get { return _currentDC; } }
 
-        private static DmmMeasurementType _currentAC = new DmmMeasurementType("CurrentAC", "Current (AC)", "A");
+        private static DmmMeasurementType _currentAC = new DmmMeasurementType("CurrentAC", "Current (AC)", "A~");
         /// <summary>
         /// Gets current (AC) measurement type.
         /// </summary>
