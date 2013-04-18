@@ -53,7 +53,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="DmmSerialPortSettingsUnitTest.cs" />
+    <Compile Include="DmmMeasurementUnitTests.cs" />
+    <Compile Include="DmmSerialPortSettingsUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

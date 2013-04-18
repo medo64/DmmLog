@@ -6,7 +6,7 @@ using System.IO.Ports;
 namespace DmmLogTest {
 
     [TestClass()]
-    public class DmmSerialPortSettingsUnitTest {
+    public class DmmSerialPortSettingsUnitTests {
 
         [TestMethod()]
         public void DmmSerialPortSettings_Create() {

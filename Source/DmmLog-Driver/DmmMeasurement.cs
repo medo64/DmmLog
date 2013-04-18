@@ -12,7 +12,7 @@ namespace DmmLogDriver {
         /// </summary>
         /// <param name="value">Measurement value.</param>
         public DmmMeasurement(Decimal value)
-            : this(value, DmmMeasurementType.Unknown, 0) {
+            : this(value, DmmMeasurementType.Unknown) {
         }
 
         /// <summary>
@@ -21,25 +21,11 @@ namespace DmmLogDriver {
         /// <param name="value">Measurement value.</param>
         /// <param name="type">Measurement type.</param>
         /// <exception cref="System.ArgumentNullException">Type cannot be null.</exception>
-        public DmmMeasurement(Decimal value, DmmMeasurementType type)
-            : this(value, type, 0) {
-        }
-
-        /// <summary>
-        /// Creates new instance.
-        /// </summary>
-        /// <param name="value">Measurement value.</param>
-        /// <param name="type">Measurement type.</param>
-        /// <param name="resolution">Measurement resolution (e.g. 0.001 for 1 mV resolution). If resolution is 0 then best suitable resolution will be found.</param>
-        /// <exception cref="System.ArgumentNullException">Type cannot be null.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Resolution cannot be negative.</exception>
-        public DmmMeasurement(Decimal value, DmmMeasurementType type, Decimal resolution) {
+        public DmmMeasurement(Decimal value, DmmMeasurementType type) {
             if (type == null) { throw new ArgumentNullException("type", "Type cannot be null."); }
-            if (resolution < 0) { throw new ArgumentOutOfRangeException("resolution", "Resolution cannot be negative."); }
             this.Time = DateTime.UtcNow;
             this.Value = value;
             this.MeasurementType = type;
-            this.Resolution = resolution;
         }
 
 
@@ -58,18 +44,13 @@ namespace DmmLogDriver {
         /// </summary>
         public DmmMeasurementType MeasurementType { get; private set; }
 
-        /// <summary>
-        /// Gets resolution of measurement (e.g. 0.01 if resolution was 10 mV).
-        /// </summary>
-        public Decimal Resolution { get; private set; }
-
 
         /// <summary>
         /// Gets exponent part for engineering value notation.
         /// If resolution is defined, exponent will match it.
         /// </summary>
         public Int32 EngineeringExponent {
-            get { return GetEngineeringExponent((this.Resolution > 0) ? this.Resolution : this.Value); }
+            get { return GetEngineeringExponent(this.Value); }
         }
 
         /// <summary>
