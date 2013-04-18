@@ -87,5 +87,26 @@ namespace DmmLogTest {
             Assert.AreEqual("GV", m.SIUnit);
         }
 
+
+        [TestMethod()]
+        public void DmmMeasurement_RangeMilliToNone_Above() {
+            var r = new DmmMeasurementRange("Current", 0.001M, 20M, DmmMeasurementType.CurrentDC);
+            var m = new DmmMeasurement(1000, r);
+            Assert.AreEqual(1000, m.EngineeringCoefficient);
+            Assert.AreEqual(0, m.EngineeringExponent);
+            Assert.AreEqual("", m.SIPrefix);
+            Assert.AreEqual("A", m.SIUnit);
+        }
+
+        [TestMethod()]
+        public void DmmMeasurement_RangeMilliToNone_Below() {
+            var r = new DmmMeasurementRange("Current", 0.001M, 20M, DmmMeasurementType.CurrentDC);
+            var m = new DmmMeasurement(0.0001M, r);
+            Assert.AreEqual(0.1M, m.EngineeringCoefficient);
+            Assert.AreEqual(-3, m.EngineeringExponent);
+            Assert.AreEqual("m", m.SIPrefix);
+            Assert.AreEqual("mA", m.SIUnit);
+        }
+
     }
 }

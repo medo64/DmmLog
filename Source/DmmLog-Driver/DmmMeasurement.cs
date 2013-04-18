@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DmmLogDriver.Helpers;
+using System;
 using System.Globalization;
 
 namespace DmmLogDriver {
@@ -25,7 +26,22 @@ namespace DmmLogDriver {
             if (type == null) { throw new ArgumentNullException("type", "Type cannot be null."); }
             this.Time = DateTime.UtcNow;
             this.Value = value;
+            this.MeasurementRange = new DmmMeasurementRange(type.Title, type);
             this.MeasurementType = type;
+        }
+
+        /// <summary>
+        /// Creates new instance.
+        /// </summary>
+        /// <param name="value">Measurement value.</param>
+        /// <param name="range">Measurement range.</param>
+        /// <exception cref="System.ArgumentNullException">Range cannot be null.</exception>
+        public DmmMeasurement(Decimal value, DmmMeasurementRange range) {
+            if (range == null) { throw new ArgumentNullException("range", "Range cannot be null."); }
+            this.Time = DateTime.UtcNow;
+            this.Value = value;
+            this.MeasurementRange = range;
+            this.MeasurementType = range.MeasurementType;
         }
 
 
@@ -40,6 +56,11 @@ namespace DmmLogDriver {
         public Decimal Value { get; private set; }
 
         /// <summary>
+        /// Gets measurement range.
+        /// </summary>
+        public DmmMeasurementRange MeasurementRange { get; private set; }
+
+        /// <summary>
         /// Gets measurement type.
         /// </summary>
         public DmmMeasurementType MeasurementType { get; private set; }
@@ -47,32 +68,16 @@ namespace DmmLogDriver {
 
         /// <summary>
         /// Gets exponent part for engineering value notation.
-        /// If resolution is defined, exponent will match it.
         /// </summary>
         public Int32 EngineeringExponent {
-            get { return GetEngineeringExponent(this.Value); }
+            get { return EngineeringNotation.GetEngineeringExponent(this.Value, this.MeasurementRange.MinimumExponent, this.MeasurementRange.MaximumExponent); }
         }
 
         /// <summary>
         /// Gets coefficient part for engineering number notation.
         /// </summary>
         public Decimal EngineeringCoefficient {
-            get {
-                var value = this.Value;
-                if ((value == decimal.MaxValue) || (value == decimal.MinValue)) { return value; }
-                var exponent = this.EngineeringExponent;
-                if (exponent >= 0) {
-                    for (int i = 0; i < exponent; i++) {
-                        value = value / 10;
-                    }
-                    return value;
-                } else {
-                    for (int i = exponent; i < 0; i++) {
-                        value = value * 10;
-                    }
-                    return value;
-                }
-            }
+            get { return EngineeringNotation.GetEngineeringCoefficient(this.Value, this.MeasurementRange.MinimumExponent, this.MeasurementRange.MaximumExponent); }
         }
 
         /// <summary>
@@ -118,35 +123,6 @@ namespace DmmLogDriver {
         public override string ToString() {
             return string.Format(CultureInfo.CurrentCulture, "{0:0.######} {1}", this.EngineeringCoefficient, this.SIUnit);
         }
-
-
-        #region Helpers
-
-        private static int GetEngineeringExponent(decimal value) {
-            if ((value == decimal.MaxValue) || (value == decimal.MinValue)) { return 0; }
-            value = Math.Abs(value);
-            if (value == 0) {
-                return 0;
-            } else if (value >= 1) {
-                var exp = 0;
-                while (value > 10) {
-                    value /= 10;
-                    exp += 1;
-                }
-                exp = (exp / 3) * 3;
-                return (exp > 9) ? 9 : exp;
-            } else {
-                var exp = 0;
-                while (value < 1) {
-                    value *= 10;
-                    exp -= 1;
-                }
-                exp = ((exp - 2) / 3) * 3;
-                return (exp < -9) ? -9 : exp;
-            }
-        }
-
-        #endregion
 
     }
 }
