@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace DmmLogDriver {
 
@@ -7,8 +8,8 @@ namespace DmmLogDriver {
     /// </summary>
     public class DmmMeasurementType {
 
-        private DmmMeasurementType(String id, String title, String unit) {
-            this.Id = id;
+        private DmmMeasurementType(String key, String title, String unit) {
+            this.Key = key;
             this.Title = title;
             this.Unit = unit;
         }
@@ -17,7 +18,7 @@ namespace DmmLogDriver {
         /// <summary>
         /// Gets unique identificator for given measurement type.
         /// </summary>
-        public String Id { get; private set; }
+        public String Key { get; private set; }
 
         /// <summary>
         /// Gets user friendly name for measurement.
@@ -36,14 +37,14 @@ namespace DmmLogDriver {
         /// <param name="obj">The object. to compare with the current object.</param>
         public override bool Equals(object obj) {
             var other = obj as DmmMeasurementType;
-            return (other != null) && (other.Id.Equals(this.Id, StringComparison.Ordinal));
+            return (other != null) && (other.Key.Equals(this.Key, StringComparison.Ordinal));
         }
 
         /// <summary>
         /// Serves as a hash function for a particular type.
         /// </summary>
         public override int GetHashCode() {
-            return this.Id.GetHashCode();
+            return this.Key.GetHashCode();
         }
 
         /// <summary>
@@ -57,60 +58,83 @@ namespace DmmLogDriver {
 
         #region Static
 
-        private static DmmMeasurementType _unknown = new DmmMeasurementType(null, "Unknown", null);
+        private static Dictionary<String, DmmMeasurementType> Dictionary;
+
+        /// <summary>
+        /// Returns measurement type based on key or null if lookup fails.
+        /// </summary>
+        /// <param name="key">Lookup key.</param>
+        public static DmmMeasurementType GetMeasurementType(string key) {
+            if (DmmMeasurementType.Dictionary == null) {
+                var dict = new Dictionary<String, DmmMeasurementType>(StringComparer.OrdinalIgnoreCase);
+                AddToDictionary(dict, "", "Unknown", "");
+                AddToDictionary(dict, "VoltageDC", "Voltage (DC)", "V");
+                AddToDictionary(dict, "VoltageAC", "Voltage (AC)", "V~");
+                AddToDictionary(dict, "Resistance", "Resistance", "Ω");
+                AddToDictionary(dict, "Diode", "Diode", "V");
+                AddToDictionary(dict, "Capacitance", "Capacitance", "F");
+                AddToDictionary(dict, "CurrentDC", "Current (DC)", "A");
+                AddToDictionary(dict, "CurrentAC", "Current (AC)", "A~");
+                AddToDictionary(dict, "Frequency", "Frequency", "Hz");
+                DmmMeasurementType.Dictionary = dict;
+            }
+            DmmMeasurementType type;
+            if (DmmMeasurementType.Dictionary.TryGetValue(key, out type)) {
+                return type;
+            } else {
+                return null;
+            }
+        }
+
+        private static void AddToDictionary(Dictionary<String, DmmMeasurementType> dictionary, String key, String title, String unit) {
+            dictionary.Add(key, new DmmMeasurementType(key, title, unit));
+        }
+
+
+        /// <summary>
+        /// Gets unknown measurement type.
+        /// </summary>
+        public static DmmMeasurementType Unknown { get { return DmmMeasurementType.GetMeasurementType(""); } }
+
         /// <summary>
         /// Gets voltage (DC) measurement type.
         /// </summary>
-        public static DmmMeasurementType Unknown { get { return _unknown; } }
+        public static DmmMeasurementType VoltageDC { get { return DmmMeasurementType.GetMeasurementType("VoltageDC"); } }
 
-
-        private static DmmMeasurementType _voltageDC = new DmmMeasurementType("VoltageDC", "Voltage (DC)", "V");
-        /// <summary>
-        /// Gets voltage (DC) measurement type.
-        /// </summary>
-        public static DmmMeasurementType VoltageDC { get { return _voltageDC; } }
-
-        private static DmmMeasurementType _voltageAC = new DmmMeasurementType("VoltageAC", "Voltage (AC)", "V~");
         /// <summary>
         /// Gets voltage (AC) measurement type.
         /// </summary>
-        public static DmmMeasurementType VoltageAC { get { return _voltageAC; } }
+        public static DmmMeasurementType VoltageAC { get { return DmmMeasurementType.GetMeasurementType("VoltageAC"); } }
 
-        private static DmmMeasurementType _resistance = new DmmMeasurementType("Resistance", "Resistance", "Ω");
         /// <summary>
         /// Gets resistance measurement type.
         /// </summary>
-        public static DmmMeasurementType Resistance { get { return _resistance; } }
+        public static DmmMeasurementType Resistance { get { return DmmMeasurementType.GetMeasurementType("Resistance"); } }
 
-        private static DmmMeasurementType _diode = new DmmMeasurementType("Diode", "Diode", "V");
         /// <summary>
         /// Gets diode forward voltage measurement type.
         /// </summary>
-        public static DmmMeasurementType Diode { get { return _diode; } }
+        public static DmmMeasurementType Diode { get { return DmmMeasurementType.GetMeasurementType("Diode"); } }
 
-        private static DmmMeasurementType _capacitance = new DmmMeasurementType("Capacitance", "Capacitance", "F");
         /// <summary>
         /// Gets capacitance measurement type.
         /// </summary>
-        public static DmmMeasurementType Capacitance { get { return _capacitance; } }
+        public static DmmMeasurementType Capacitance { get { return DmmMeasurementType.GetMeasurementType("Capacitance"); } }
 
-        private static DmmMeasurementType _currentDC = new DmmMeasurementType("CurrentDC", "Current (DC)", "A");
         /// <summary>
         /// Gets current (DC) measurement type.
         /// </summary>
-        public static DmmMeasurementType CurrentDC { get { return _currentDC; } }
+        public static DmmMeasurementType CurrentDC { get { return DmmMeasurementType.GetMeasurementType("CurrentDC"); } }
 
-        private static DmmMeasurementType _currentAC = new DmmMeasurementType("CurrentAC", "Current (AC)", "A~");
         /// <summary>
         /// Gets current (AC) measurement type.
         /// </summary>
-        public static DmmMeasurementType CurrentAC { get { return _currentAC; } }
+        public static DmmMeasurementType CurrentAC { get { return DmmMeasurementType.GetMeasurementType("CurrentAC"); } }
 
-        private static DmmMeasurementType _frequency = new DmmMeasurementType("Frequency", "Frequency", "Hz");
         /// <summary>
         /// Gets frequency measurement type.
         /// </summary>
-        public static DmmMeasurementType Frequency { get { return _frequency; } }
+        public static DmmMeasurementType Frequency { get { return DmmMeasurementType.GetMeasurementType("Frequency"); } }
 
         #endregion
 
