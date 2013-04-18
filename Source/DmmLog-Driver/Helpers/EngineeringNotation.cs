@@ -4,20 +4,6 @@ using System.Diagnostics;
 namespace DmmLogDriver.Helpers {
     internal static class EngineeringNotation {
 
-        internal static Int32 GetEngineeringExponent(Decimal value) {
-            Decimal coefficient;
-            Int32 exponent;
-            GetNumbers(value, out coefficient, out exponent);
-            return exponent;
-        }
-
-        internal static Decimal GetEngineeringCoefficient(Decimal value) {
-            Decimal coefficient;
-            Int32 exponent;
-            GetNumbers(value, out coefficient, out exponent);
-            return coefficient;
-        }
-
         internal static Int32 GetEngineeringExponent(Decimal value, Int32 minExponent, Int32 maxExponent) {
             Decimal coefficient;
             Int32 exponent;
@@ -32,19 +18,21 @@ namespace DmmLogDriver.Helpers {
             return coefficient;
         }
 
-        internal static void GetNumbers(Decimal value, out Decimal coefficient, out Int32 exponent) {
-            GetNumbers(value, out coefficient, out exponent, MinEngineeringExponent, MaxEngineeringExponent);
-        }
-
         internal static void GetNumbers(Decimal value, out Decimal coefficient, out Int32 exponent, Int32 minExponent, Int32 maxExponent) {
             Debug.Assert(minExponent % 3 == 0);
             Debug.Assert(minExponent >= MinEngineeringExponent);
             Debug.Assert(maxExponent % 3 == 0);
             Debug.Assert(maxExponent <= MaxEngineeringExponent);
 
-            if ((value == decimal.MinValue) || (value == 0) || (value == decimal.MaxValue)) {
-                coefficient = value;
-                exponent = 0;
+            if (value == decimal.MinValue) {
+                coefficient = decimal.MinValue;
+                exponent = minExponent;
+            } else if (value == decimal.MaxValue) {
+                coefficient = decimal.MaxValue;
+                exponent = maxExponent;
+            } else if (value == 0) {
+                coefficient = 0;
+                exponent = minExponent;
             } else {
                 var valueExp = Math.Abs(value);
                 if (valueExp >= 1) {

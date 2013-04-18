@@ -17,6 +17,7 @@ namespace DmmLogTest {
             Assert.AreEqual("CurrentDC", DmmMeasurementType.CurrentDC.Key);
             Assert.AreEqual("CurrentAC", DmmMeasurementType.CurrentAC.Key);
             Assert.AreEqual("Frequency", DmmMeasurementType.Frequency.Key);
+            Assert.AreEqual("Temperature", DmmMeasurementType.Temperature.Key);
         }
 
         [TestMethod()]
@@ -30,6 +31,7 @@ namespace DmmLogTest {
             Assert.AreEqual("A", DmmMeasurementType.CurrentDC.Unit);
             Assert.AreEqual("A~", DmmMeasurementType.CurrentAC.Unit);
             Assert.AreEqual("Hz", DmmMeasurementType.Frequency.Unit);
+            Assert.AreEqual("°C", DmmMeasurementType.Temperature.Unit);
         }
 
     }

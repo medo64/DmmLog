@@ -76,6 +76,7 @@ namespace DmmLogDriver {
                 AddToDictionary(dict, "CurrentDC", "Current (DC)", "A");
                 AddToDictionary(dict, "CurrentAC", "Current (AC)", "A~");
                 AddToDictionary(dict, "Frequency", "Frequency", "Hz");
+                AddToDictionary(dict, "Temperature", "Temperature", "°C");
                 DmmMeasurementType.Dictionary = dict;
             }
             DmmMeasurementType type;
@@ -135,6 +136,11 @@ namespace DmmLogDriver {
         /// Gets frequency measurement type.
         /// </summary>
         public static DmmMeasurementType Frequency { get { return DmmMeasurementType.GetMeasurementType("Frequency"); } }
+
+        /// <summary>
+        /// Gets temperature measurement type.
+        /// </summary>
+        public static DmmMeasurementType Temperature { get { return DmmMeasurementType.GetMeasurementType("Temperature"); } }
 
         #endregion
 
