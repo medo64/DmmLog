@@ -124,6 +124,31 @@ namespace DmmLogDriverAgilent {
         public override DmmMeasurement GetCurrentMeasurement() {
             var resultRead = this.SendScpi("READ?");
 
+            var type = GetMeasurementType();
+            if (!type.Equals(this.LastMeasurementType)) {
+                this.LastMeasurementType = type;
+                return GetCurrentMeasurement(); //repeat measurement
+            } else {
+                this.LastMeasurementType = type;
+            }
+
+            if (resultRead != null) {
+                if (resultRead.Equals("+9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
+                    return new DmmMeasurement(decimal.MaxValue, type);
+                } else if (resultRead.Equals("-9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
+                    return new DmmMeasurement(decimal.MinValue, type);
+                } else {
+                    decimal value;
+                    if (decimal.TryParse(resultRead, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) {
+                        return new DmmMeasurement(value, type);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        private DmmMeasurementType GetMeasurementType() {
             DmmMeasurementType type = DmmMeasurementType.Unknown;
             var resultConf = this.SendScpi("CONF?");
             if ((resultConf != null) && resultConf.StartsWith("\"", StringComparison.Ordinal) && resultConf.EndsWith("\"", StringComparison.Ordinal)) {
@@ -168,28 +193,7 @@ namespace DmmLogDriverAgilent {
                         } break;
                 }
             }
-
-            if (!type.Equals(this.LastMeasurementType)) {
-                this.LastMeasurementType = type;
-                return GetCurrentMeasurement(); //repeat measurement
-            } else {
-                this.LastMeasurementType = type;
-            }
-
-            if (resultRead != null) {
-                if (resultRead.Equals("+9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
-                    return new DmmMeasurement(decimal.MaxValue, type);
-                } else if (resultRead.Equals("-9.90000000E+37", StringComparison.OrdinalIgnoreCase)) {
-                    return new DmmMeasurement(decimal.MinValue, type);
-                } else {
-                    decimal value;
-                    if (decimal.TryParse(resultRead, NumberStyles.Float, CultureInfo.InvariantCulture, out value)) {
-                        return new DmmMeasurement(value, type);
-                    }
-                }
-            }
-
-            return null;
+            return type;
         }
 
         #endregion
