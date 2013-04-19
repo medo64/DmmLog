@@ -29,6 +29,9 @@ namespace DmmLogDriver {
         public DmmMeasurementRange(String title, Int32 minimumExponent, Int32 maximumExponent, DmmMeasurementType measurementType) {
             if (title == null) { throw new ArgumentNullException("title", "Title cannot be null."); }
             if (measurementType == null) { throw new ArgumentNullException("measurementType", "Measurement type cannot be null."); }
+
+            minimumExponent = ((Math.Abs(minimumExponent) + 2) / 3 * 3) * Math.Sign(minimumExponent);
+            maximumExponent = ((Math.Abs(maximumExponent) + 2) / 3 * 3) * Math.Sign(maximumExponent);
             if (minimumExponent < EngineeringNotation.MinEngineeringExponent) { minimumExponent = EngineeringNotation.MinEngineeringExponent; }
             if (maximumExponent > EngineeringNotation.MaxEngineeringExponent) { maximumExponent = EngineeringNotation.MaxEngineeringExponent; }
             if (maximumExponent < minimumExponent) { throw new ArgumentOutOfRangeException("maximumExponent", "Maximum must be larger than or equal to minimum."); }
