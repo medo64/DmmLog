@@ -43,7 +43,7 @@ namespace DmmLogDriver {
         /// <summary>
         /// Gets manufacturer and model combined.
         /// </summary>
-        protected String DisplayName { get { return DmmDriverInformation.GetDriverInformation(this.GetType()).DisplayName; } }
+        protected String DisplayName { get { return DmmDriverCapabilities.GetDriverCapabilities(this.GetType()).DisplayName; } }
 
         /// <summary>
         /// Gets all supported measurements.

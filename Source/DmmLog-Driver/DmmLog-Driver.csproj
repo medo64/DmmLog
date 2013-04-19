@@ -50,7 +50,7 @@
     </Compile>
     <Compile Include="DmmDriverInterface.cs" />
     <Compile Include="DmmDriver.cs" />
-    <Compile Include="DmmDriverInformation.cs" />
+    <Compile Include="DmmDriverCapabilities.cs" />
     <Compile Include="DmmEngineeringNotation.cs" />
     <Compile Include="DmmIdentification.cs" />
     <Compile Include="DmmMeasurement.cs" />

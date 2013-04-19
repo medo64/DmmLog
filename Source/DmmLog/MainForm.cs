@@ -70,9 +70,9 @@ namespace DmmLog {
         private void mnuDeviceAdd_DropDownOpening(object sender, EventArgs e) {
             mnuDeviceAdd.DropDownItems.Clear();
             foreach (var driver in Drivers.LoadedDrivers) {
-                var menuItem = new ToolStripMenuItem(driver.Information.DisplayName);
+                var menuItem = new ToolStripMenuItem(driver.Capabilities.DisplayName);
                 menuItem.Click += delegate(object senderClick, EventArgs eClick) {
-                    switch (driver.Information.Interface) {
+                    switch (driver.Capabilities.Interface) {
                         case DmmDriverInterface.None: {
                                 using (var frm = new NewDeviceNoInterfaceForm(driver)) {
                                     if (frm.ShowDialog(this) == DialogResult.OK) {
@@ -95,7 +95,7 @@ namespace DmmLog {
                                 }
                             } break;
 
-                        default: throw new NotSupportedException("Unknown interface '" + driver.Information.Interface.ToString() + "'.");
+                        default: throw new NotSupportedException("Unknown interface '" + driver.Capabilities.Interface.ToString() + "'.");
                     }
                 };
                 mnuDeviceAdd.DropDownItems.Add(menuItem);

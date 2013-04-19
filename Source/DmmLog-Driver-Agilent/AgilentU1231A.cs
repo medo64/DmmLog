@@ -6,7 +6,7 @@ using System.ComponentModel;
 namespace DmmLogDriverAgilent {
     [Category("Agilent")]
     [DisplayName("U1231A")]
-    [Description("Serial")]
+    [Description("Interface=SerialPort, UpdateInterval=200")]
     public class AgilentU1231A : AgilentBase {
 
         public AgilentU1231A(String settings)

@@ -12,7 +12,7 @@ namespace DmmLog {
 
          public NewDeviceNoInterfaceForm(Driver driver) //new device
             : this() {
-            this.Text = "New " + driver.Information.DisplayName + " device";
+            this.Text = "New " + driver.Capabilities.DisplayName + " device";
         }
 
          public NewDeviceNoInterfaceForm(Device device) //edit device

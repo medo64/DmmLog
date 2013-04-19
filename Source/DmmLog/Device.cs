@@ -78,7 +78,7 @@ namespace DmmLog {
                 DoubleClickEnabled = true,
                 ForeColor = SystemColors.GrayText,
                 Tag = this,
-                ToolTipText = this.Driver.Information.DisplayName
+                ToolTipText = this.Driver.Capabilities.DisplayName
             };
 
 
@@ -130,7 +130,7 @@ namespace DmmLog {
                 mnuConfigure.Click += delegate(object sender, EventArgs e) {
                     String newDisplayName = this.DisplayName;
                     String newSettings = this.Settings;
-                    switch (this.Driver.Information.Interface) {
+                    switch (this.Driver.Capabilities.Interface) {
                         case DmmDriverInterface.None: {
                                 using (var frm = new NewDeviceNoInterfaceForm(this)) {
                                     if (frm.ShowDialog(this.Window) == DialogResult.OK) {
@@ -149,7 +149,7 @@ namespace DmmLog {
                                 }
                             } break;
 
-                        default: throw new NotSupportedException("Unknown interface '" + this.Driver.Information.Interface.ToString() + "'.");
+                        default: throw new NotSupportedException("Unknown interface '" + this.Driver.Capabilities.Interface.ToString() + "'.");
                     }
 
                     if (!string.Equals(this.DisplayName, newDisplayName, StringComparison.Ordinal)) { //change display name
@@ -190,7 +190,7 @@ namespace DmmLog {
         void Worker_DoWork(object sender, DoWorkEventArgs e) {
             var dmm = this.Instance;
 
-            Debug.WriteLine("I: Connecting to '" + this.DisplayName + "' using '" + this.Driver.Information.DisplayName + "' driver.");
+            Debug.WriteLine("I: Connecting to '" + this.DisplayName + "' using '" + this.Driver.Capabilities.DisplayName + "' driver.");
             dmm.Connect();
 
             if (dmm.IsConnected) {
@@ -204,7 +204,7 @@ namespace DmmLog {
                         Debug.WriteLine("I: Current measurement '-'.");
                     }
                     Devices.RaiseMeasurementUpdate(this);
-                    Thread.Sleep(200);
+                    Thread.Sleep(this.Driver.Capabilities.UpdateInterval);
 
                     Worker.ReportProgress(-1); //new measurement
                 }
@@ -230,7 +230,7 @@ namespace DmmLog {
         public DmmMeasurement CurrentMeasurement {
             get {
                 var value = this._currentMeasurement;
-                return (value != null) && ((DateTime.UtcNow - value.Time).TotalMilliseconds <= 500) ? value : null;
+                return (value != null) && ((DateTime.UtcNow - value.Time).TotalMilliseconds <= this.Driver.Capabilities.UpdateInterval * 1.5) ? value : null;
             }
             private set { this._currentMeasurement = value; }
         }

@@ -22,7 +22,7 @@ namespace DmmLog {
                     if (type.IsPublic && (type.IsAbstract == false) && type.IsSubclassOf(typeof(DmmDriver))) {
                         var driver = new Driver(type);
                         drivers.Add(type.Name, driver);
-                        Debug.WriteLine("I: Found '" + driver.Information.DisplayName + "' in '" + file.Name + "'.");
+                        Debug.WriteLine("I: Found '" + driver.Capabilities.DisplayName + "' in '" + file.Name + "'.");
                     }
                 }
             }
@@ -49,13 +49,13 @@ namespace DmmLog {
 
                 drivers.Sort(
                     delegate(Driver driver1, Driver driver2) {
-                        var manufacturer = string.Compare(driver1.Information.Manufacturer, driver2.Information.Manufacturer);
+                        var manufacturer = string.Compare(driver1.Capabilities.Manufacturer, driver2.Capabilities.Manufacturer);
                         if (manufacturer != 0) {
-                            if (driver1.Information.Manufacturer == null) { return 1; }
-                            if (driver2.Information.Manufacturer == null) { return -1; }
+                            if (driver1.Capabilities.Manufacturer == null) { return 1; }
+                            if (driver2.Capabilities.Manufacturer == null) { return -1; }
                             return manufacturer;
                         } else {
-                            return string.Compare(driver1.Information.Model, driver2.Information.Model);
+                            return string.Compare(driver1.Capabilities.Model, driver2.Capabilities.Model);
                         }
                     });
 

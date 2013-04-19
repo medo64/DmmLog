@@ -6,7 +6,7 @@ using System.ComponentModel;
 
 namespace DmmLogDriverAgilent {
     [DisplayName("Random")]
-    [Description("")]
+    [Description("UpdateInterval=100")]
     public class Random : DmmDriver {
 
         public Random(String settings)

@@ -36,7 +36,7 @@ namespace DmmLog {
 
         public NewDeviceSerialInterfaceForm(Driver driver) //new device
             : this() {
-            this.Text = "New " + driver.Information.DisplayName + " device";
+            this.Text = "New " + driver.Capabilities.DisplayName + " device";
 
             cmbPortName.SelectedIndex = 0;
             cmbBaudRate.SelectedIndex = 1; //9600
