@@ -1,19 +1,30 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace DmmLogDriver {
     /// <summary>
     /// Multimeter range.
     /// </summary>
+    [DebuggerDisplay("{Title}")]
     public class DmmMeasurementRange {
 
         /// <summary>
         /// Create new instance.
         /// </summary>
-        /// <param name="title">Title of range (e.g. 60mV).</param>
         /// <param name="measurementType">Measurement type for range.</param>\
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
-        public DmmMeasurementRange(String title, DmmMeasurementType measurementType)
-            : this(title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType) {
+        public DmmMeasurementRange(DmmMeasurementType measurementType)
+            : this(measurementType.Title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, null) {
+        }
+
+        /// <summary>
+        /// Create new instance.
+        /// </summary>
+        /// <param name="measurementType">Measurement type for range.</param>\
+        /// <param name="extraMarking">Extra marking (e.g. ~ for AC).</param>
+        /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
+        public DmmMeasurementRange(DmmMeasurementType measurementType, String extraMarking)
+            : this(measurementType.Title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, extraMarking) {
         }
 
         /// <summary>
@@ -25,7 +36,21 @@ namespace DmmLogDriver {
         /// <param name="measurementType">Measurement type for range.</param>\
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Maximum must be larger than or equal to minimum.</exception>
-        public DmmMeasurementRange(String title, Int32 minimumExponent, Int32 maximumExponent, DmmMeasurementType measurementType) {
+        public DmmMeasurementRange(String title, Int32 minimumExponent, Int32 maximumExponent, DmmMeasurementType measurementType) :
+            this(title, minimumExponent, maximumExponent, measurementType, null) {
+        }
+
+        /// <summary>
+        /// Create new instance.
+        /// </summary>
+        /// <param name="title">Title of range (e.g. 60mV).</param>
+        /// <param name="minimumExponent">Minimum exponent value.</param>
+        /// <param name="maximumExponent">Maximum exponent value.</param>
+        /// <param name="measurementType">Measurement type for range.</param>
+        /// <param name="extraMarking">Extra marking (e.g. ~ for AC).</param>
+        /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Maximum must be larger than or equal to minimum.</exception>
+        public DmmMeasurementRange(String title, Int32 minimumExponent, Int32 maximumExponent, DmmMeasurementType measurementType, String extraMarking) {
             if (title == null) { throw new ArgumentNullException("title", "Title cannot be null."); }
             if (measurementType == null) { throw new ArgumentNullException("measurementType", "Measurement type cannot be null."); }
 
@@ -39,6 +64,7 @@ namespace DmmLogDriver {
             this.MinimumExponent = minimumExponent;
             this.MaximumExponent = maximumExponent;
             this.MeasurementType = measurementType;
+            this.ExtraMarking = extraMarking;
         }
 
         /// <summary>
@@ -60,6 +86,11 @@ namespace DmmLogDriver {
         /// Gets measurement type value.
         /// </summary>
         public DmmMeasurementType MeasurementType { get; private set; }
+
+        /// <summary>
+        /// Gets extra marking (e.g. ~ for AC).
+        /// </summary>
+        public String ExtraMarking { get; private set; }
 
     }
 }

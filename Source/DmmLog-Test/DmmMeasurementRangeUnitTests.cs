@@ -56,7 +56,7 @@ namespace DmmLogTest {
 
         [TestMethod()]
         public void DmmMeasurementRange_UndefinedRange() {
-            var r = new DmmMeasurementRange("Test", DmmMeasurementType.VoltageDC);
+            var r = new DmmMeasurementRange(DmmMeasurementType.VoltageDC);
             Assert.AreEqual(-9, r.MinimumExponent);
             Assert.AreEqual(9, r.MaximumExponent);
         }

@@ -26,6 +26,7 @@ namespace DmmLog {
         private readonly Int32 BaseTitleHeight = 16;
         private readonly Int32 BaseDigitHeight = 80;
         private readonly Int32 BaseUnitHeight = 40;
+        private readonly Int32 BaseMarkingHeight = 20;
         private readonly Int32 BaseInfoHeight = 16;
         private readonly Padding BaseDisplayPadding = new Padding(8);
 
@@ -41,6 +42,7 @@ namespace DmmLog {
                 var titleHeight = (int)(this.BaseTitleHeight * multiplierY);
                 var digitHeight = (int)(this.BaseDigitHeight * multiplierY);
                 var digitUnitHeight = (int)(this.BaseUnitHeight * multiplierY);
+                var digitMarkingHeight = (int)(this.BaseMarkingHeight * multiplierY);
                 var infoHeight = (int)(this.BaseInfoHeight * multiplierY);
 
                 this.DisplayPadding = new Padding((int)(this.BaseDisplayPadding.Left * multiplierX), (int)(this.BaseDisplayPadding.Top * multiplierY), (int)(this.BaseDisplayPadding.Right * multiplierX), (int)(this.BaseDisplayPadding.Bottom * multiplierY));
@@ -51,6 +53,7 @@ namespace DmmLog {
                 this.DigitDotFont = new Font(Settings.SidebarFontName, digitHeight, FontStyle.Regular, GraphicsUnit.Pixel);
                 this.DigitFractionalFont = new Font(Settings.SidebarFontName, digitHeight, FontStyle.Regular, GraphicsUnit.Pixel);
                 this.DigitUnitFont = new Font(Settings.SidebarFontName, digitUnitHeight, FontStyle.Regular, GraphicsUnit.Pixel);
+                this.DigitMarkingFont = new Font(Settings.SidebarFontName, digitMarkingHeight, FontStyle.Regular, GraphicsUnit.Pixel);
 
                 this.DigitMinusSize = new Size((int)Math.Ceiling(g.MeasureString("-", this.DigitIntegralFont, 0, StringFormat.GenericTypographic).Width), digitHeight);
                 this.DigitNumberSize = new Size((int)Math.Ceiling(g.MeasureString("8", this.DigitIntegralFont, 0, StringFormat.GenericTypographic).Width), digitHeight);
@@ -70,7 +73,7 @@ namespace DmmLog {
 
         private Padding DisplayMargin, DisplayPadding;
         private Size DisplaySize;
-        private Font TitleFont, DigitMinusFont, DigitIntegralFont, DigitDotFont, DigitFractionalFont, DigitUnitFont;
+        private Font TitleFont, DigitMinusFont, DigitIntegralFont, DigitDotFont, DigitFractionalFont, DigitUnitFont, DigitMarkingFont;
         private Size TitleSize, DigitMinusSize, DigitNumberSize, DigitDotSize, DigitUnitSize, RangeSize;
 
         private StringFormat SFCenterMiddle = new StringFormat(StringFormat.GenericTypographic) { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
@@ -134,7 +137,10 @@ namespace DmmLog {
                     }
                 }
 
-                graphics.DrawString(measurement.SIUnit, this.DigitUnitFont, SystemBrushes.InfoText, left + this.DisplaySize.Width, y, SFRightMiddle);
+                if (measurement.ExtraMarking != null) {
+                    graphics.DrawString(measurement.ExtraMarking, this.DigitMarkingFont, SystemBrushes.InfoText, left + this.DisplaySize.Width, y - this.DisplaySize.Height / 5, SFRightMiddle);
+                }
+                graphics.DrawString(measurement.SIUnit, this.DigitUnitFont, SystemBrushes.InfoText, left + this.DisplaySize.Width, y + this.DisplaySize.Height / 10, SFRightMiddle);
             }
         }
 

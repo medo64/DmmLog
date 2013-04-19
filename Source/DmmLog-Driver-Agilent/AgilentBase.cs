@@ -151,15 +151,15 @@ namespace DmmLogDriverAgilent {
         }
 
 
-        private static DmmMeasurementRange RangeUnknown = new DmmMeasurementRange(DmmMeasurementType.Unknown.Title, DmmMeasurementType.Unknown);
+        private static DmmMeasurementRange RangeUnknown = new DmmMeasurementRange(DmmMeasurementType.Unknown);
         private static DmmMeasurementRange RangeVoltageDC600m = new DmmMeasurementRange("600 mV", -3, -3, DmmMeasurementType.VoltageDC);
         private static DmmMeasurementRange RangeVoltageDC6 = new DmmMeasurementRange("6 V", 0, 0, DmmMeasurementType.VoltageDC);
         private static DmmMeasurementRange RangeVoltageDC60 = new DmmMeasurementRange("60 V", 0, 0, DmmMeasurementType.VoltageDC);
         private static DmmMeasurementRange RangeVoltageDC600 = new DmmMeasurementRange("600 V", 0, 0, DmmMeasurementType.VoltageDC);
-        private static DmmMeasurementRange RangeVoltageAC600m = new DmmMeasurementRange("600 mV", -3, -3, DmmMeasurementType.VoltageAC);
-        private static DmmMeasurementRange RangeVoltageAC6 = new DmmMeasurementRange("6 V", 0, 0, DmmMeasurementType.VoltageAC);
-        private static DmmMeasurementRange RangeVoltageAC60 = new DmmMeasurementRange("60 V", 0, 0, DmmMeasurementType.VoltageAC);
-        private static DmmMeasurementRange RangeVoltageAC600 = new DmmMeasurementRange("600 V", 0, 0, DmmMeasurementType.VoltageAC);
+        private static DmmMeasurementRange RangeVoltageAC600m = new DmmMeasurementRange("600 mV", -3, -3, DmmMeasurementType.VoltageAC, "~");
+        private static DmmMeasurementRange RangeVoltageAC6 = new DmmMeasurementRange("6 V", 0, 0, DmmMeasurementType.VoltageAC, "~");
+        private static DmmMeasurementRange RangeVoltageAC60 = new DmmMeasurementRange("60 V", 0, 0, DmmMeasurementType.VoltageAC, "~");
+        private static DmmMeasurementRange RangeVoltageAC600 = new DmmMeasurementRange("600 V", 0, 0, DmmMeasurementType.VoltageAC, "~");
         private static DmmMeasurementRange RangeResistance600 = new DmmMeasurementRange("600 Ω", 0, 0, DmmMeasurementType.Resistance);
         private static DmmMeasurementRange RangeResistance6k = new DmmMeasurementRange("6 kΩ", 3, 3, DmmMeasurementType.Resistance);
         private static DmmMeasurementRange RangeResistance60k = new DmmMeasurementRange("60 kΩ", 3, 3, DmmMeasurementType.Resistance);
@@ -176,10 +176,10 @@ namespace DmmLogDriverAgilent {
         private static DmmMeasurementRange RangeCurrentDC600u = new DmmMeasurementRange("600 µA", -6, -6, DmmMeasurementType.CurrentDC);
         private static DmmMeasurementRange RangeCurrentDC6 = new DmmMeasurementRange("6 A", 0, 0, DmmMeasurementType.CurrentDC);
         private static DmmMeasurementRange RangeCurrentDC10 = new DmmMeasurementRange("10 A", 0, 0, DmmMeasurementType.CurrentDC);
-        private static DmmMeasurementRange RangeCurrentAC60u = new DmmMeasurementRange("60 µA", -6, -6, DmmMeasurementType.CurrentAC);
-        private static DmmMeasurementRange RangeCurrentAC600u = new DmmMeasurementRange("600 µA", -6, -6, DmmMeasurementType.CurrentAC);
-        private static DmmMeasurementRange RangeCurrentAC6 = new DmmMeasurementRange("6 A", 0, 0, DmmMeasurementType.CurrentAC);
-        private static DmmMeasurementRange RangeCurrentAC10 = new DmmMeasurementRange("10 A", 0, 0, DmmMeasurementType.CurrentAC);
+        private static DmmMeasurementRange RangeCurrentAC60u = new DmmMeasurementRange("60 µA", -6, -6, DmmMeasurementType.CurrentAC, "~");
+        private static DmmMeasurementRange RangeCurrentAC600u = new DmmMeasurementRange("600 µA", -6, -6, DmmMeasurementType.CurrentAC, "~");
+        private static DmmMeasurementRange RangeCurrentAC6 = new DmmMeasurementRange("6 A", 0, 0, DmmMeasurementType.CurrentAC, "~");
+        private static DmmMeasurementRange RangeCurrentAC10 = new DmmMeasurementRange("10 A", 0, 0, DmmMeasurementType.CurrentAC, "~");
         private static DmmMeasurementRange RangeFrequency100 = new DmmMeasurementRange("99.99 Hz", 0, 0, DmmMeasurementType.Frequency);
         private static DmmMeasurementRange RangeFrequency1k = new DmmMeasurementRange("999.99 Hz", 0, 0, DmmMeasurementType.Frequency);
         private static DmmMeasurementRange RangeFrequency10k = new DmmMeasurementRange("9.999 kHz", 3, 3, DmmMeasurementType.Frequency);

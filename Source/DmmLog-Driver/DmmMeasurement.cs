@@ -25,7 +25,7 @@ namespace DmmLogDriver {
             if (type == null) { throw new ArgumentNullException("type", "Type cannot be null."); }
             this.Time = DateTime.UtcNow;
             this.Value = new DmmEngineeringNotation(value);
-            this.MeasurementRange = new DmmMeasurementRange(type.Title, type);
+            this.MeasurementRange = new DmmMeasurementRange(type);
             this.MeasurementType = type;
         }
 
@@ -84,6 +84,13 @@ namespace DmmLogDriver {
         /// </summary>
         public String Unit {
             get { return this.MeasurementType.Unit; }
+        }
+
+        /// <summary>
+        /// Gets unit marking for value (e.g. ~ for AC).
+        /// </summary>
+        public String ExtraMarking {
+            get { return this.MeasurementRange.ExtraMarking; }
         }
 
 

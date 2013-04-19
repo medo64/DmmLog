@@ -69,12 +69,12 @@ namespace DmmLogDriver {
                 var dict = new Dictionary<String, DmmMeasurementType>(StringComparer.OrdinalIgnoreCase);
                 AddToDictionary(dict, "", "Unknown", "");
                 AddToDictionary(dict, "VoltageDC", "Voltage (DC)", "V");
-                AddToDictionary(dict, "VoltageAC", "Voltage (AC)", "V~");
+                AddToDictionary(dict, "VoltageAC", "Voltage (AC)", "V");
                 AddToDictionary(dict, "Resistance", "Resistance", "Ω");
                 AddToDictionary(dict, "Diode", "Diode", "V");
                 AddToDictionary(dict, "Capacitance", "Capacitance", "F");
                 AddToDictionary(dict, "CurrentDC", "Current (DC)", "A");
-                AddToDictionary(dict, "CurrentAC", "Current (AC)", "A~");
+                AddToDictionary(dict, "CurrentAC", "Current (AC)", "A");
                 AddToDictionary(dict, "Frequency", "Frequency", "Hz");
                 AddToDictionary(dict, "Temperature", "Temperature", "°C");
                 DmmMeasurementType.Dictionary = dict;

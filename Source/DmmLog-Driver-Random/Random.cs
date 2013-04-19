@@ -57,7 +57,7 @@ namespace DmmLogDriverAgilent {
 
 
         private MovingAverage Readings = new MovingAverage(1000);
-        private DmmMeasurementType Type = DmmMeasurementType.Unknown;
+        private DmmMeasurementRange Range = null;
         private static System.Random Rnd = new System.Random();
 
         private DmmMeasurement GetNextMeasurement() {
@@ -65,15 +65,15 @@ namespace DmmLogDriverAgilent {
 
             if (this.Readings.IsEmpty || (Rnd.Next(100) == 0)) {
                 switch (Rnd.Next(9)) {
-                    case 0: this.Type = DmmMeasurementType.VoltageDC; break;
-                    case 1: this.Type = DmmMeasurementType.VoltageAC; break;
-                    case 2: this.Type = DmmMeasurementType.Resistance; break;
-                    case 3: this.Type = DmmMeasurementType.Diode; break;
-                    case 4: this.Type = DmmMeasurementType.Capacitance; break;
-                    case 5: this.Type = DmmMeasurementType.CurrentDC; break;
-                    case 6: this.Type = DmmMeasurementType.CurrentAC; break;
-                    case 7: this.Type = DmmMeasurementType.Frequency; break;
-                    default: this.Type = DmmMeasurementType.Unknown; break;
+                    case 0: this.Range = new DmmMeasurementRange(DmmMeasurementType.VoltageDC); break;
+                    case 1: this.Range = new DmmMeasurementRange(DmmMeasurementType.VoltageAC, "~"); break;
+                    case 2: this.Range = new DmmMeasurementRange(DmmMeasurementType.Resistance); break;
+                    case 3: this.Range = new DmmMeasurementRange(DmmMeasurementType.Diode); break;
+                    case 4: this.Range = new DmmMeasurementRange(DmmMeasurementType.Capacitance); break;
+                    case 5: this.Range = new DmmMeasurementRange(DmmMeasurementType.CurrentDC); break;
+                    case 6: this.Range = new DmmMeasurementRange(DmmMeasurementType.CurrentAC, "~"); break;
+                    case 7: this.Range = new DmmMeasurementRange(DmmMeasurementType.Frequency); break;
+                    default: this.Range = new DmmMeasurementRange(DmmMeasurementType.Unknown, "?"); break;
                 }
                 this.Readings.Clear();
                 var newValue = Rnd.Next(-9, 10) * Math.Pow(10, Rnd.Next(-8, 9));
@@ -87,7 +87,7 @@ namespace DmmLogDriverAgilent {
                 this.Readings.Add(newValue);
             }
 
-            return new DmmMeasurement(Convert.ToDecimal(this.Readings.Average), this.Type);
+            return new DmmMeasurement(Convert.ToDecimal(this.Readings.Average), this.Range);
         }
 
         #endregion
