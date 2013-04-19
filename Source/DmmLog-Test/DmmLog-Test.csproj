@@ -53,6 +53,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DmmEngineeringNotationUnitTests.cs" />
     <Compile Include="DmmMeasurementRangeUnitTests.cs" />
     <Compile Include="DmmMeasurementTypeUnitTests.cs" />
     <Compile Include="DmmMeasurementUnitTests.cs" />

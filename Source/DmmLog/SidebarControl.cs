@@ -105,7 +105,7 @@ namespace DmmLog {
         private void PaintDigits(Graphics graphics, int left, int top, DmmMeasurement measurement) {
             if (measurement != null) {
                 int integralDigitCount;
-                var chars = GetChars(measurement.EngineeringCoefficient, out integralDigitCount);
+                var chars = GetChars(measurement.Value.Coefficient, out integralDigitCount);
 
                 var y = top + this.DigitNumberSize.Height / 2;
                 var x = left;

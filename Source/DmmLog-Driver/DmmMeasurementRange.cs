@@ -1,5 +1,4 @@
-﻿using DmmLogDriver.Helpers;
-using System;
+﻿using System;
 
 namespace DmmLogDriver {
     /// <summary>
@@ -14,7 +13,7 @@ namespace DmmLogDriver {
         /// <param name="measurementType">Measurement type for range.</param>\
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
         public DmmMeasurementRange(String title, DmmMeasurementType measurementType)
-            : this(title, EngineeringNotation.MinEngineeringExponent, EngineeringNotation.MaxEngineeringExponent, measurementType) {
+            : this(title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType) {
         }
 
         /// <summary>
@@ -32,8 +31,8 @@ namespace DmmLogDriver {
 
             minimumExponent = ((Math.Abs(minimumExponent) + 2) / 3 * 3) * Math.Sign(minimumExponent);
             maximumExponent = ((Math.Abs(maximumExponent) + 2) / 3 * 3) * Math.Sign(maximumExponent);
-            if (minimumExponent < EngineeringNotation.MinEngineeringExponent) { minimumExponent = EngineeringNotation.MinEngineeringExponent; }
-            if (maximumExponent > EngineeringNotation.MaxEngineeringExponent) { maximumExponent = EngineeringNotation.MaxEngineeringExponent; }
+            if (minimumExponent < DmmEngineeringNotation.MinimumExponent) { minimumExponent = DmmEngineeringNotation.MinimumExponent; }
+            if (maximumExponent > DmmEngineeringNotation.MaximumExponent) { maximumExponent = DmmEngineeringNotation.MaximumExponent; }
             if (maximumExponent < minimumExponent) { throw new ArgumentOutOfRangeException("maximumExponent", "Maximum must be larger than or equal to minimum."); }
 
             this.Title = title;
