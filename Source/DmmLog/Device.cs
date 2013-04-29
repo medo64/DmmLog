@@ -67,7 +67,7 @@ namespace DmmLog {
         private ToolStrip Menu;
         private ToolStripSplitButton MenuItem;
 
-        public ToolStripItem CreateMenuItem(IWin32Window window, ToolStrip menu) {
+        public ToolStripItem CreateMenuItem(IWin32Window window, ToolStrip menu, SidebarControl sidebarControl) {
             Debug.Assert(window != null);
             Debug.Assert(menu != null);
 
@@ -84,7 +84,6 @@ namespace DmmLog {
 
             this.MenuItem.ButtonClick += delegate(object sender, EventArgs e) {
                 //TODO:Select device 
-                this.MenuItem.ShowDropDown();
             };
 
             this.MenuItem.ButtonDoubleClick += delegate(object sender, EventArgs e) {
@@ -95,7 +94,7 @@ namespace DmmLog {
 
             this.MenuItem.DropDownOpening += delegate(object sender, EventArgs e) {
                 this.MenuItem.DropDownItems.Clear();
-                FillDeviceDropDown(this.MenuItem.DropDownItems, this);
+                FillDeviceDropDown(this.MenuItem.DropDownItems, this, sidebarControl);
             };
 
             return this.MenuItem;
@@ -106,10 +105,11 @@ namespace DmmLog {
 
         #region Menu
 
-        private void FillDeviceDropDown(ToolStripItemCollection menu, Device device) {
+        private void FillDeviceDropDown(ToolStripItemCollection menu, Device device, SidebarControl sidebarControl) {
             if (this.IsConnected == true) {
                 var mnuDisconnect = new ToolStripMenuItem("Disconnect");
                 mnuDisconnect.Click += delegate(object sender, EventArgs e) {
+                    sidebarControl.Invalidate();
                     this.Disconnect();
                 };
                 menu.Add(mnuDisconnect);
@@ -175,6 +175,7 @@ namespace DmmLog {
                         Devices.Remove(this);
                         this.Menu.Items.Remove(this.MenuItem);
                     }
+                    sidebarControl.Invalidate();
                 };
             } else {
                 mnuRemove.Enabled = false;
@@ -230,7 +231,7 @@ namespace DmmLog {
         public DmmMeasurement CurrentMeasurement {
             get {
                 var value = this._currentMeasurement;
-                return (value != null) && ((DateTime.UtcNow - value.Time).TotalMilliseconds <= this.Driver.Capabilities.UpdateInterval * 1.5) ? value : null;
+                return (value != null) && ((DateTime.UtcNow - value.Time).TotalMilliseconds <= this.Driver.Capabilities.UpdateInterval * 1.5) && (this.IsConnected == true) ? value : null;
             }
             private set { this._currentMeasurement = value; }
         }

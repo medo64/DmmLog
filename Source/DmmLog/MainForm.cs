@@ -97,6 +97,8 @@ namespace DmmLog {
 
                         default: throw new NotSupportedException("Unknown interface '" + driver.Capabilities.Interface.ToString() + "'.");
                     }
+
+                    sidebar.Invalidate();
                 };
                 mnuDeviceAdd.DropDownItems.Add(menuItem);
             }
@@ -132,7 +134,7 @@ namespace DmmLog {
                     break;
                 }
             }
-            mnu.Items.Insert(++insertIndex, device.CreateMenuItem(this, mnu));
+            mnu.Items.Insert(++insertIndex, device.CreateMenuItem(this, mnu, sidebar));
         }
 
         #endregion

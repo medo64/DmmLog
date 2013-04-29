@@ -20,7 +20,15 @@ namespace DmmLog {
             Devices.MeasurementUpdate += delegate(object sender, EventArgs e) {
                 this.Invalidate();
             };
+
+            this.RefreshTimer = new Timer() { Interval = 1000, Enabled = true };
+            this.RefreshTimer.Tick += delegate(object sender, EventArgs e) {
+                this.Invalidate();
+            };
+            this.RefreshTimer.Start();
         }
+
+        private readonly Timer RefreshTimer;
 
 
         private readonly Int32 BaseTitleHeight = 16;
