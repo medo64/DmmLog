@@ -17,6 +17,11 @@ namespace DmmLog {
             foreach (var portName in SerialPort.GetPortNames()) {
                 cmbPortName.Items.Add(new TagItem<string, string>(portName, portName));
             }
+            if (cmbPortName.Items.Count == 0) {
+                cmbPortName.DropDownStyle = ComboBoxStyle.DropDown;
+                cmbPortName.Text = " No serial port.";
+                cmbPortName.Enabled = false;
+            }
 
             foreach (var baudRate in new int[] { 4800, 9600, 19200, 38400, 57600, 115200 }) {
                 cmbBaudRate.Items.Add(new TagItem<int, string>(baudRate, baudRate.ToString(CultureInfo.CurrentCulture)));
@@ -38,7 +43,7 @@ namespace DmmLog {
             : this() {
             this.Text = "New " + driver.Capabilities.DisplayName + " device";
 
-            cmbPortName.SelectedIndex = 0;
+            if (cmbPortName.Items.Count > 0) { cmbPortName.SelectedIndex = 0; }
             cmbBaudRate.SelectedIndex = 1; //9600
             cmbParity.SelectedIndex = 0;   //N
             cmbDataBits.SelectedIndex = 1; //8
