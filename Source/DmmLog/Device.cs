@@ -83,7 +83,7 @@ namespace DmmLog {
 
 
             this.MenuItem.ButtonClick += delegate(object sender, EventArgs e) {
-                //TODO:Select device 
+                sidebarControl.SelectedDevice = this;
             };
 
             this.MenuItem.ButtonDoubleClick += delegate(object sender, EventArgs e) {

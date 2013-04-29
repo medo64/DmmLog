@@ -1,5 +1,6 @@
 using DmmLogDriver;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -30,6 +31,18 @@ namespace DmmLog {
 
         private readonly Timer RefreshTimer;
 
+
+        private Device _selectedDevice;
+        public Device SelectedDevice {
+            get { return this._selectedDevice; }
+            set {
+                this._selectedDevice = value;
+                this.Invalidate();
+            }
+        }
+
+
+        #region Paint
 
         private readonly Int32 BaseTitleHeight = 16;
         private readonly Int32 BaseDigitHeight = 80;
@@ -96,21 +109,32 @@ namespace DmmLog {
             e.Graphics.SmoothingMode = SmoothingMode.Default;
             e.Graphics.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
+            var deviceRectangles = new List<KeyValuePair<Rectangle, Device>>();
+
             var y = 0;
             var x = this.DisplayMargin.Left;
             foreach (var device in Devices.LoadedDevices) {
                 y += this.DisplayMargin.Top;
 
-                e.Graphics.FillRectangle(SystemBrushes.Info, x, y, this.DisplaySize.Width + this.DisplayPadding.Horizontal, this.DisplaySize.Height + this.DisplayPadding.Vertical);
-                e.Graphics.DrawString(device.DisplayName, this.TitleFont, SystemBrushes.GrayText, new Rectangle(x + this.DisplayPadding.Left, y + this.DisplayPadding.Top, this.TitleSize.Width, this.TitleSize.Height), this.SFLeftTop);
-                PaintDigits(e.Graphics, x + this.DisplayPadding.Left, y + this.DisplayPadding.Top + this.TitleSize.Height, device.CurrentMeasurement);
+                var rect = new Rectangle(x, y + this.AutoScrollPosition.Y, this.DisplaySize.Width + this.DisplayPadding.Horizontal, this.DisplaySize.Height + this.DisplayPadding.Vertical);
+                deviceRectangles.Add(new KeyValuePair<Rectangle, Device>(rect, device));
+
+                e.Graphics.FillRectangle(SystemBrushes.Info, rect);
+                e.Graphics.DrawString(device.DisplayName, this.TitleFont, SystemBrushes.GrayText, new Rectangle(rect.X + this.DisplayPadding.Left, rect.Y + this.DisplayPadding.Top, this.TitleSize.Width, this.TitleSize.Height), this.SFLeftTop);
+                PaintDigits(e.Graphics, rect.X + this.DisplayPadding.Left, rect.Y + this.DisplayPadding.Top + this.TitleSize.Height, device.CurrentMeasurement);
+                if (device.Equals(this.SelectedDevice)) {
+                    e.Graphics.DrawRectangle(SystemPens.Highlight, rect);
+                }
 
                 y += this.DisplayPadding.Vertical + this.DisplaySize.Height;
             }
             y += this.DisplayMargin.Bottom;
 
+            if (y != this.AutoScrollMinSize.Height) {
+                this.AutoScrollMinSize = new Size(0, y);
+            }
 
-            this.AutoScrollMinSize = new Size(0, y);
+            this.RectanglesForDevices = deviceRectangles;
         }
 
         private void PaintDigits(Graphics graphics, int left, int top, DmmMeasurement measurement) {
@@ -196,6 +220,29 @@ namespace DmmLog {
 
             return chars;
         }
+
+        #endregion
+
+
+        #region Mouse
+
+        private List<KeyValuePair<Rectangle, Device>> RectanglesForDevices = new List<KeyValuePair<Rectangle, Device>>();
+
+        protected override void OnMouseClick(MouseEventArgs e) {
+            base.OnMouseClick(e);
+            Device newSelectedDevice = null;
+            foreach (var item in this.RectanglesForDevices) {
+                var rect = item.Key;
+                var device = item.Value;
+                if (rect.Contains(e.Location)) {
+                    newSelectedDevice = device;
+                    break;
+                }
+            }
+            this.SelectedDevice = newSelectedDevice;
+        }
+
+        #endregion
 
     }
 }
