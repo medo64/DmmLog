@@ -85,7 +85,7 @@ namespace DmmLogDriverAgilent {
                 var newDelta = Rnd.Next(-200, 201) / 100.0;
                 var newRange = (currValue != 0) ? Math.Pow(10, Math.Truncate((Math.Log10(Math.Abs(currValue))))) : 1;
                 if (newRange < 1) { newRange /= 10; }
-                var newValue = currValue + newDelta * newRange;
+                var newValue = currValue + newDelta * newRange * 0.1;
                 this.Readings.Add(newValue);
             }
 
