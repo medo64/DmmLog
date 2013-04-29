@@ -52,10 +52,11 @@
     <Compile Include="DmmDriver.cs" />
     <Compile Include="DmmDriverCapabilities.cs" />
     <Compile Include="DmmEngineeringNotation.cs" />
-    <Compile Include="DmmIdentification.cs" />
+    <Compile Include="DmmInformation.cs" />
     <Compile Include="DmmMeasurement.cs" />
     <Compile Include="DmmMeasurementRange.cs" />
     <Compile Include="DmmMeasurementType.cs" />
+    <Compile Include="DmmPropertyDictionary.cs" />
     <Compile Include="DmmSerialPortSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

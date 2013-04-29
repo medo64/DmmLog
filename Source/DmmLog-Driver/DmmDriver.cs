@@ -59,7 +59,7 @@ namespace DmmLogDriver {
         /// Returns identificator for connected device.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "The method potentially performs a time-consuming operation.")]
-        public abstract DmmIdentification GetIdentification();
+        public abstract DmmInformation GetIdentification();
 
 
         /// <summary>

@@ -47,8 +47,10 @@ namespace DmmLogDriverAgilent {
 
         #region Queries
 
-        public override DmmIdentification GetIdentification() {
-            return new DmmIdentification(null, "Random");
+        public override DmmInformation GetIdentification() {
+            var props = new DmmPropertyDictionary();
+            props.Add("Model", "Random");
+            return new DmmInformation(props);
         }
 
         public override DmmMeasurement GetCurrentMeasurement() {

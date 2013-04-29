@@ -97,26 +97,23 @@ namespace DmmLogDriverAgilent {
 
         #region Queries
 
-        public override DmmIdentification GetIdentification() {
+        public override DmmInformation GetIdentification() {
             var result = this.SendScpi("*IDN?");
-            if (result == null) {
-                return new DmmIdentification(null, null); //no response
-            } else {
+            var props = new DmmPropertyDictionary();
+            if (result != null) {
                 var parts = result.Split(',');
-                if (parts.Length != 4) {
-                    return new DmmIdentification(null, null, null, null, result); //cannot really parse anything
-                } else {
+                if (parts.Length == 4) {
+                    props.Add("Manufacturer", parts[0]);
+                    props.Add("Model", parts[1]);
+                    props.Add("Serial", parts[2]);
                     if (parts[3].StartsWith("V", StringComparison.Ordinal)) {
-                        try {
-                            return new DmmIdentification(parts[0], parts[1], parts[2], new Version(parts[3].Substring(1)), null);
-                        } catch (FormatException) {
-                            return new DmmIdentification(parts[0], parts[1], parts[2], null, parts[3]);
-                        }
+                        props.Add("FirmwareVersion", parts[3].Substring(1));
                     } else {
-                        return new DmmIdentification(parts[0], parts[1], parts[2], null, parts[3]);
+                        props.Add("Other", parts[3]);
                     }
                 }
             }
+            return new DmmInformation(props);
         }
 
         private DmmMeasurementType LastMeasurementType = null;
