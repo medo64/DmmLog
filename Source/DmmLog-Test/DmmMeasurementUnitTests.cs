@@ -30,7 +30,7 @@ namespace DmmLogTest {
             Assert.AreEqual(3.14159M, m.Value.Coefficient);
             Assert.AreEqual(3, m.Value.Exponent);
             Assert.AreEqual("k", m.Value.SIPrefix);
-            Assert.AreEqual("kV~", m.SIUnit);
+            Assert.AreEqual("kV", m.SIUnit);
         }
 
         [TestMethod()]
@@ -66,7 +66,7 @@ namespace DmmLogTest {
             Assert.AreEqual(314.159265358M, m.Value.Coefficient);
             Assert.AreEqual(9, m.Value.Exponent);
             Assert.AreEqual("G", m.Value.SIPrefix);
-            Assert.AreEqual("GA~", m.SIUnit);
+            Assert.AreEqual("GA", m.SIUnit);
         }
 
         [TestMethod()]

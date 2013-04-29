@@ -24,12 +24,12 @@ namespace DmmLogTest {
         public void DmmMeasurementType_Units() {
             Assert.AreEqual("", DmmMeasurementType.Unknown.Unit);
             Assert.AreEqual("V", DmmMeasurementType.VoltageDC.Unit);
-            Assert.AreEqual("V~", DmmMeasurementType.VoltageAC.Unit);
+            Assert.AreEqual("V", DmmMeasurementType.VoltageAC.Unit);
             Assert.AreEqual("Ω", DmmMeasurementType.Resistance.Unit);
             Assert.AreEqual("V", DmmMeasurementType.Diode.Unit);
             Assert.AreEqual("F", DmmMeasurementType.Capacitance.Unit);
             Assert.AreEqual("A", DmmMeasurementType.CurrentDC.Unit);
-            Assert.AreEqual("A~", DmmMeasurementType.CurrentAC.Unit);
+            Assert.AreEqual("A", DmmMeasurementType.CurrentAC.Unit);
             Assert.AreEqual("Hz", DmmMeasurementType.Frequency.Unit);
             Assert.AreEqual("°C", DmmMeasurementType.Temperature.Unit);
         }
