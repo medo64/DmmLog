@@ -14,7 +14,7 @@ namespace DmmLogDriver {
         /// <param name="measurementType">Measurement type for range.</param>\
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
         public DmmMeasurementRange(DmmMeasurementType measurementType)
-            : this(measurementType.Title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, null) {
+            : this((measurementType != null) ? measurementType.Title : null, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, null) {
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace DmmLogDriver {
         /// <param name="extraMarking">Extra marking (e.g. ~ for AC).</param>
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
         public DmmMeasurementRange(DmmMeasurementType measurementType, String extraMarking)
-            : this(measurementType.Title, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, extraMarking) {
+            : this((measurementType != null) ? measurementType.Title : null, DmmEngineeringNotation.MinimumExponent, DmmEngineeringNotation.MaximumExponent, measurementType, extraMarking) {
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace DmmLogDriver {
         /// <exception cref="System.ArgumentNullException">Title cannot be null. -or- Measurement type cannot be null.</exception>
         /// <exception cref="System.ArgumentOutOfRangeException">Maximum must be larger than or equal to minimum.</exception>
         public DmmMeasurementRange(String title, Int32 minimumExponent, Int32 maximumExponent, DmmMeasurementType measurementType, String extraMarking) {
-            if (title == null) { throw new ArgumentNullException("title", "Title cannot be null."); }
             if (measurementType == null) { throw new ArgumentNullException("measurementType", "Measurement type cannot be null."); }
+            if (title == null) { throw new ArgumentNullException("title", "Title cannot be null."); }
 
             minimumExponent = ((Math.Abs(minimumExponent) + 2) / 3 * 3) * Math.Sign(minimumExponent);
             maximumExponent = ((Math.Abs(maximumExponent) + 2) / 3 * 3) * Math.Sign(maximumExponent);
