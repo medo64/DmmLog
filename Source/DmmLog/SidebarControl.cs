@@ -37,6 +37,27 @@ namespace DmmLog {
             get { return this._selectedDevice; }
             set {
                 this._selectedDevice = value;
+
+                Rectangle selectedRectangle = Rectangle.Empty;
+                foreach (var item in this.RectanglesForDevices) {
+                    var rect = item.Key;
+                    var device = item.Value;
+                    if (device.Equals(value)) {
+                        selectedRectangle = rect;
+                    }
+                }
+                if (!(selectedRectangle.IsEmpty)) {
+                    selectedRectangle.Offset(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y);
+                    var currRect = new Rectangle(-this.AutoScrollPosition.X, -this.AutoScrollPosition.Y, this.ClientRectangle.Width, this.ClientRectangle.Height);
+                    if (!(currRect.Contains(selectedRectangle))) {
+                        if (currRect.Top < selectedRectangle.Top) {
+                            this.AutoScrollPosition = new Point(0, selectedRectangle.Bottom - currRect.Top);
+                        } else {
+                            this.AutoScrollPosition = new Point(0, selectedRectangle.Top - currRect.Bottom);
+                        }
+                    }
+                }
+
                 this.Invalidate();
             }
         }
